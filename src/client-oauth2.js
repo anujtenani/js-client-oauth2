@@ -1,7 +1,7 @@
 var Buffer = require('safe-buffer').Buffer
 var Querystring = require('querystring')
 var Url = require('url')
-var defaultRequest = require('./request')
+var defaultRequest = require('./request/browser')
 
 var btoa
 if (typeof Buffer === 'function') {

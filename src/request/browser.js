@@ -1,5 +1,5 @@
 /**
- * Make a request using `XMLHttpRequest`.
+ * Make a request using `Fetch`.
  *
  * @param   {string}  method
  * @param   {string}  url
@@ -8,26 +8,12 @@
  * @returns {Promise}
  */
 module.exports = function request (method, url, body, headers) {
-  return new Promise(function (resolve, reject) {
-    var xhr = new window.XMLHttpRequest()
-
-    xhr.open(method, url)
-
-    xhr.onload = function () {
-      return resolve({
-        status: xhr.status,
-        body: xhr.responseText
-      })
-    }
-
-    xhr.onerror = xhr.onabort = function () {
-      return reject(new Error(xhr.statusText || 'XHR aborted: ' + url))
-    }
-
-    Object.keys(headers).forEach(function (header) {
-      xhr.setRequestHeader(header, headers[header])
+    return fetch(url, {
+      method, headers, body
+    }).then((res) => {
+      const {status} = res;
+      return res.text().then((body) => {
+          return {status, body}
+      });
     })
-
-    xhr.send(body)
-  })
 }
